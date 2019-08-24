@@ -1,7 +1,6 @@
 {
   "name": "@typescene/web-nav",
   "version": "2.0.0",
-  "private": true,
   "description": "Typescene web app navigation components",
   "types": "index.d.ts",
   "files": [
