@@ -1,10 +1,11 @@
 {
-    "compilerOptions": {
-        "strict": true,
-        "target": "es5",
-        "outDir": "../dist",
-        "declaration": true,
-        "experimentalDecorators": true,
-        "lib": ["esnext", "dom"]
-    }
+  "compilerOptions": {
+    "strict": true,
+    "target": "es5",
+    "outDir": "../dist",
+    "declaration": true,
+    "experimentalDecorators": true,
+    "lib": ["esnext", "dom"]
+  },
+  "files": ["index.ts"]
 }

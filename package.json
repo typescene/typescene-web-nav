@@ -1,11 +1,15 @@
 {
   "name": "@typescene/web-nav",
-  "version": "1.2.0",
+  "version": "0.0.0",
+  "private": true,
   "description": "Typescene web app navigation components",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "index.d.ts",
+  "files": [
+    "dist",
+    "index.js",
+    "index.d.ts"
+  ],
   "scripts": {
-    "start": "cd demo && parcel ./public/index.html --open",
     "prepublishOnly": "npm run build",
     "build": "tsc -p src",
     "prebuild": "rm -rf dist"
@@ -18,7 +22,6 @@
   "license": "MIT",
   "devDependencies": {
     "@typescene/webapp": "2",
-    "parcel-bundler": "^1.11.0",
     "typescript": "^3.2.2"
   }
 }
