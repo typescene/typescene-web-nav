@@ -36,5 +36,5 @@ npm install
 npm run build
 cd demo
 npm install
-npx parcel index.html --open
+npm start
 ```
