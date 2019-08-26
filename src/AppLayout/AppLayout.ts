@@ -50,10 +50,11 @@ class AppLayoutView extends ViewComponent {
     });
 
     // preset actual content
-    return super.preset(
-      {},
+    this.presetActiveComponent(
+      "view",
       UICell.with(presets, Header, UIScrollContainer.with(...content))
-    );
+    ).limitBindings();
+    return super.preset({});
   }
 
   async showDrawerAsync(): Promise<DialogViewActivity> {
