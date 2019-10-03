@@ -1,8 +1,7 @@
 import JSX, {
-  Application,
   DialogViewActivity,
+  managedChild,
   UICell,
-  UIFlowCell,
   UIRenderableConstructor,
   UIRenderPlacement,
   UIScrollContainer,
@@ -11,6 +10,23 @@ import JSX, {
 } from "typescene/JSX";
 import { AppDrawerComponent } from "./AppDrawer";
 import { AppHeaderComponent } from "./AppHeader";
+
+class DrawerActivity extends DialogViewActivity {
+  static preset(presets: any, View?: UIRenderableConstructor) {
+    if (View) {
+      this.presetActiveComponent("view", View).limitBindings();
+    }
+    return super.preset(presets);
+  }
+  placement = UIRenderPlacement.DRAWER;
+  modalShadeClickToClose = true;
+  constructor() {
+    super();
+    this.propagateChildEvents(e => {
+      if (e.name === "CloseModal") this.destroyAsync();
+    });
+  }
+}
 
 class AppLayoutView extends ViewComponent {
   static preset(presets: UICell.Presets, ...content: UIRenderableConstructor[]) {
@@ -40,14 +56,14 @@ class AppLayoutView extends ViewComponent {
     });
 
     // handle `ShowAppMenu` event to trigger the drawer
-    this.handle({
-      Active() {
-        this._Drawer = Drawer;
-      },
-      ShowAppMenu() {
-        this.showDrawerAsync();
-      },
-    });
+    if (Drawer) {
+      this.prototype._Drawer = DrawerActivity.with(Drawer);
+      this.handle({
+        ShowAppMenu() {
+          this.showDrawerAsync();
+        },
+      });
+    }
 
     // preset actual content
     this.presetActiveComponent(
@@ -57,24 +73,19 @@ class AppLayoutView extends ViewComponent {
     return super.preset({});
   }
 
-  async showDrawerAsync(): Promise<DialogViewActivity> {
-    let app = this.getParentComponent(Application);
-    if (!this._Drawer || !app) throw Error();
+  /** View activity for the drawer, if any */
+  @managedChild
+  drawerActivity?: DrawerActivity;
 
-    class DrawerActivity extends DialogViewActivity.with(this._Drawer) {
-      placement = UIRenderPlacement.DRAWER;
-      modalShadeClickToClose = true;
-      constructor() {
-        super();
-        this.propagateChildEvents(e => {
-          if (e.name === "CloseModal") this.destroyAsync();
-        });
-      }
-    }
-    return app.showViewActivityAsync(new DrawerActivity());
+  /** Show the drawer as a dialog view activity (creates a new instance each time) */
+  async showDrawerAsync(): Promise<DialogViewActivity> {
+    if (!this._Drawer) throw Error();
+    let drawer = (this.drawerActivity = new this._Drawer());
+    await drawer.activateAsync();
+    return drawer;
   }
 
-  private _Drawer?: typeof UICell;
+  private _Drawer?: typeof DrawerActivity;
 }
 
 export const AppLayout = JSX.ify(AppLayoutView);
