@@ -1,17 +1,18 @@
-import JSX, {
+import {
+  JSX,
   UICell,
   UISelectionController,
   UIScrollContainer,
   UIRenderableConstructor,
   UIStyle,
-} from "typescene/JSX";
+} from "typescene";
 
-/** Style for `TabBar` */
+/** Style for `TabBarView` */
 const _tabBarStyle = UIStyle.create("TabBar", {
   position: { gravity: "stretch" },
   containerLayout: { axis: "horizontal", distribution: "fill" },
   dimensions: { grow: 0 },
-  controlStyle: {
+  decoration: {
     css: { zIndex: "10" },
     borderThickness: { bottom: 1 },
     borderColor: "@text/35%",
@@ -19,10 +20,13 @@ const _tabBarStyle = UIStyle.create("TabBar", {
 });
 
 /**
- * A bar containing tabs, for use with `TabBarButton`
+ * A bar containing tabs, for use with `TabBarButtonView`
  */
-export class TabBarComponent extends UICell.with({ style: _tabBarStyle }) {
-  static preset(presets: UICell.Presets, ...content: Array<UIRenderableConstructor>) {
+export class TabBarView extends UICell.with({ style: _tabBarStyle }) {
+  static preset(
+    presets: UICell.Presets,
+    ...content: Array<UIRenderableConstructor | undefined>
+  ) {
     return super.preset(
       presets,
       UISelectionController.with(
@@ -47,4 +51,4 @@ export class TabBarComponent extends UICell.with({ style: _tabBarStyle }) {
 /**
  * A bar containing tabs, for use with `TabBarButton`, with JSX support
  */
-export const TabBar = JSX.ify(TabBarComponent);
+export const TabBar = JSX.tag(TabBarView);

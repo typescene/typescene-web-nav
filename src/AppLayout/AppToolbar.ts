@@ -1,15 +1,15 @@
-import JSX, { UIRow, UIStyle } from "typescene/JSX";
+import { JSX, UIRow, UIStyle } from "typescene";
 
-/** Style for the `AppToolbar` component */
+/** Style for the `AppToolbarView` component */
 const _appToolbarStyle = UIStyle.create("AppToolbar", {
   position: { gravity: "center" },
 });
 
 /**
  * Application toolbar component.
- * This component is meant for use inside of `AppHeaderComponent`.
+ * This component is meant for use inside of `AppHeaderView`.
  */
-export class AppToolbarComponent extends UIRow.with({
+export class AppToolbarView extends UIRow.with({
   spacing: 4,
   style: _appToolbarStyle,
 }) {}
@@ -18,4 +18,4 @@ export class AppToolbarComponent extends UIRow.with({
  * Application toolbar component with JSX support.
  * This component is meant for use inside of an `AppHeader` component.
  */
-export const AppToolbar = JSX.ify(AppToolbarComponent);
+export const AppToolbar = JSX.tag(AppToolbarView);

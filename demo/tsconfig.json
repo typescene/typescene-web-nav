@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "es5",
+    "target": "ES6",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "jsx": "react",
     "jsxFactory": "JSX",
     "outDir": "tmp"
   },
-  "files": ["app.ts"]
+  "files": ["./app/app.ts"]
 }

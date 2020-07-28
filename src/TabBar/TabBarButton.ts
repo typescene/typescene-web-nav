@@ -1,11 +1,20 @@
-import JSX, { UIBorderlessButton, UIButton, UIStyle, observe } from "typescene/JSX";
+import {
+  JSX,
+  UIBorderlessButton,
+  UIButton,
+  UIStyle,
+  observe,
+  UIComponent,
+  UICell,
+  UIComponentEvent,
+} from "typescene";
 
-/** Style for `TabBarButton` */
+/** Style for `TabBarButtonView` */
 const _tabBarButtonStyle = UIStyle.create("TabBarButton", {
   position: { gravity: "end" },
   dimensions: { height: 42, maxHeight: 42, minWidth: 32, shrink: 0 },
   textStyle: { align: "start" },
-  controlStyle: {
+  decoration: {
     textColor: "@text",
     borderRadius: 0,
     background: "transparent",
@@ -17,13 +26,13 @@ const _tabBarButtonStyle = UIStyle.create("TabBarButton", {
   },
 })
   .addState("hover", {
-    controlStyle: { background: "@primary/10%", textColor: "@primary" },
+    decoration: { background: "@primary/10%", textColor: "@primary" },
   })
   .addState("focused", {
-    controlStyle: { background: "@primary/10%", dropShadow: 0.1 },
+    decoration: { background: "@primary/10%", dropShadow: 0.1 },
   })
   .addState("selected", {
-    controlStyle: {
+    decoration: {
       textColor: "@primary",
       borderThickness: { bottom: 2, x: 0 },
       padding: { top: 2, x: 16 },
@@ -33,35 +42,43 @@ const _tabBarButtonStyle = UIStyle.create("TabBarButton", {
 
 /** Style mixin with inverse colors */
 const _inverseTabBarButtonStyle = UIStyle.create("TabBarButton", {
-  controlStyle: {
+  decoration: {
     textColor: "@text:text",
     background: "transparent",
   },
 })
   .addState("hover", {
-    controlStyle: { background: "@text:text/20%", textColor: "@text:text" },
+    decoration: { background: "@text:text/20%", textColor: "@text:text" },
   })
   .addState("focused", {
-    controlStyle: {
+    decoration: {
       background: "@text:text/20%",
       textColor: "@text:text",
       dropShadow: 0.1,
     },
   })
   .addState("selected", {
-    controlStyle: {
+    decoration: {
       borderThickness: { bottom: 2, x: 0 },
       borderColor: "@text:text",
     },
   });
 
 /**
- * Tab bar button, for use inside of `TabBarComponent`.
+ * Tab bar button, for use inside of `TabBarView`.
  */
-export class TabBarButtonComponent extends UIBorderlessButton.with({
+export class TabBarButtonView extends UIBorderlessButton.with({
   style: _tabBarButtonStyle,
 }) {
-  static preset(presets: UIButton.Presets & { selected?: boolean; inverse?: boolean }) {
+  static preset(
+    presets: UIButton.Presets & {
+      selected?: boolean;
+      inverse?: boolean;
+      onSelect?:
+        | string
+        | ((this: TabBarButtonView, e: UIComponentEvent<TabBarButtonView>) => void);
+    }
+  ) {
     if (presets.inverse) presets.style = _inverseTabBarButtonStyle;
     return super.preset(presets);
   }
@@ -69,7 +86,7 @@ export class TabBarButtonComponent extends UIBorderlessButton.with({
 
   @observe
   static TabBarButtonObserver = class {
-    constructor(public readonly button: TabBarButtonComponent) {}
+    constructor(public readonly button: TabBarButtonView) {}
     onSelectedChangeAsync() {
       if (this.button.selected) {
         this.button.propagateComponentEvent("Select");
@@ -103,4 +120,4 @@ export class TabBarButtonComponent extends UIBorderlessButton.with({
 /**
  * Tab bar button, for use inside of a `TabBar` component, with JSX support.
  */
-export const TabBarButton = JSX.ify(TabBarButtonComponent);
+export const TabBarButton = JSX.tag(TabBarButtonView);

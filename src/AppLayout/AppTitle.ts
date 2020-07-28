@@ -1,6 +1,6 @@
-import JSX, { UIHeading1, UIStyle } from "typescene/JSX";
+import { JSX, UIHeading1, UIStyle } from "typescene";
 
-/** Style for the `AppTitle` component */
+/** Style for the `AppTitleView` component */
 const _appTitleStyle = UIStyle.create("AppTitle", {
   position: { gravity: "center" },
   textStyle: {
@@ -12,9 +12,9 @@ const _appTitleStyle = UIStyle.create("AppTitle", {
 
 /**
  * Application title (heading) component.
- * This component is meant for use inside of `AppHeaderComponent`.
+ * This component is meant for use inside of `AppHeaderView`.
  */
-export class AppTitleComponent extends UIHeading1.with({
+export class AppTitleView extends UIHeading1.with({
   iconSize: 20,
   iconMargin: 12,
   shrinkwrap: false,
@@ -25,4 +25,4 @@ export class AppTitleComponent extends UIHeading1.with({
  * Application title (heading) component with JSX support.
  * This component is meant to be used inside of an `AppHeader` component.
  */
-export const AppTitle = JSX.ify(AppTitleComponent);
+export const AppTitle = JSX.tag(AppTitleView);

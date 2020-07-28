@@ -1,20 +1,20 @@
-import JSX, { UIIconButton, UIStyle } from "typescene/JSX";
+import { JSX, UIIconButton, UIStyle } from "typescene";
 
-/** Style for `AppMenuButton` */
+/** Style for `AppMenuButtonView` */
 const _appMenuButtonStyle = UIStyle.create("AppMenuButton", {
-  controlStyle: { textColor: "inherit" },
+  decoration: { textColor: "inherit" },
 })
   .addState("hover", {
-    controlStyle: { textColor: "inherit" },
+    decoration: { textColor: "inherit" },
   })
   .addState("focused", {
-    controlStyle: { background: "@white^-10%/30%" },
+    decoration: { background: "@white^-10%/30%" },
   });
 
 /**
- * Menu button component, triggers display of `AppDrawerComponent` if used anywhere inside of `AppLayoutComponent` (e.g. within `AppHeaderComponent`).
+ * Menu button component, triggers display of `AppDrawerView` if used anywhere inside of `AppLayoutView` (e.g. within `AppHeaderView`).
  */
-export class AppMenuButtonComponent extends UIIconButton.with({
+export class AppMenuButtonView extends UIIconButton.with({
   icon: "menu",
   iconSize: 22,
   style: _appMenuButtonStyle,
@@ -24,4 +24,4 @@ export class AppMenuButtonComponent extends UIIconButton.with({
 /**
  * Menu button component, triggers display of an `AppDrawer` component if used anywhere inside of an `AppLayout` component (e.g. within the `AppHeader`).
  */
-export const AppMenuButton = JSX.ify(AppMenuButtonComponent);
+export const AppMenuButton = JSX.tag(AppMenuButtonView);
