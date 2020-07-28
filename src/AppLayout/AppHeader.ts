@@ -1,26 +1,32 @@
-import JSX, { UICell, UIRenderableConstructor, UIStyle } from "typescene/JSX";
+import { JSX, UICell, UIRenderableConstructor, UIStyle } from "typescene";
 
-/** Style for the `AppHeader` component */
+/** Style for the `AppHeaderView` component */
 const _appHeaderStyle = UIStyle.create("AppHeader", {
   dimensions: { height: 56, shrink: 0, grow: 0 },
-  containerLayout: { distribution: "fill", axis: "horizontal", clip: true },
+  containerLayout: {
+    distribution: "fill",
+    axis: "horizontal",
+    clip: true,
+    separator: { space: 16, vertical: true },
+  },
+  decoration: {
+    background: "@primary",
+    textColor: "@primary:text",
+    padding: { x: 16 },
+    dropShadow: 0.5,
+    css: { zIndex: "1000" },
+  },
 });
 
 /**
  * Application header bar component.
- * This component is meant for use inside of `AppLayoutComponent`.
+ * This component is meant for use inside of `AppLayoutView`.
  */
-export class AppHeaderComponent extends UICell.with({
-  background: "@primary",
-  textColor: "@primary:text",
-  padding: { x: 16 },
-  dropShadow: 0.5,
-  separator: { type: "spacer", thickness: 16, vertical: true },
-  css: { zIndex: "1000" },
+export class AppHeaderView extends UICell.with({
   style: _appHeaderStyle,
 }) {
   static preset(
-    presets: UICell.Presets & { height: string | number },
+    presets: UICell.Presets & { height?: string | number },
     ...content: UIRenderableConstructor[]
   ) {
     if (presets.height) {
@@ -34,4 +40,4 @@ export class AppHeaderComponent extends UICell.with({
  * Application header bar component with JSX support.
  * This component is meant for use inside of an `AppLayout` component.
  */
-export const AppHeader = JSX.ify(AppHeaderComponent);
+export const AppHeader = JSX.tag(AppHeaderView);

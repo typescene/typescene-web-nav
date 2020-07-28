@@ -21,7 +21,8 @@
   "author": "Jelmer Cormont",
   "license": "MIT",
   "devDependencies": {
-    "@typescene/webapp": "2",
-    "typescript": "^3.2.2"
+    "typescene": "beta",
+    "@typescene/webapp": "beta",
+    "typescript": "^3.9.7"
   }
 }

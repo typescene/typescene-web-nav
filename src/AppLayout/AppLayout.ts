@@ -1,4 +1,5 @@
-import JSX, {
+import {
+  JSX,
   DialogViewActivity,
   managedChild,
   UICell,
@@ -7,31 +8,31 @@ import JSX, {
   UIScrollContainer,
   UIStyle,
   ViewComponent,
-} from "typescene/JSX";
-import { AppDrawerComponent } from "./AppDrawer";
-import { AppHeaderComponent } from "./AppHeader";
+} from "typescene";
+import { AppDrawerView } from "./AppDrawer";
+import { AppHeaderView } from "./AppHeader";
 
 class DrawerActivity extends DialogViewActivity {
   static preset(presets: any, View?: UIRenderableConstructor) {
+    let result = super.preset(presets, View);
     if (View) {
-      this.presetActiveComponent("view", View).limitBindings();
+      this.presetBoundComponent("view", View).limitBindings();
     }
-    return super.preset(presets);
+    return result;
   }
-  placement = UIRenderPlacement.DRAWER;
-  modalShadeClickToClose = true;
   constructor() {
     super();
-    this.propagateChildEvents(e => {
-      if (e.name === "CloseModal") this.destroyAsync();
-    });
+    this.placement = UIRenderPlacement.DRAWER;
+    this.modalShadeClickToClose = true;
   }
 }
 
+/** Overall application layout view, encapsulates `AppHeaderView`, `AppDrawerView`, and any other content in a scrollable area */
 class AppLayoutView extends ViewComponent {
-  static preset(presets: UICell.Presets, ...content: UIRenderableConstructor[]) {
-    this.presetBindingsFrom(...content);
-
+  static preset(
+    presets: UICell.Presets,
+    ...content: Array<UIRenderableConstructor | undefined>
+  ) {
     // make sure the outer cell has a height limit
     let dimensions = presets.dimensions as Partial<UIStyle.Dimensions>;
     if (!dimensions) dimensions = presets.dimensions = {};
@@ -44,11 +45,11 @@ class AppLayoutView extends ViewComponent {
     let Header: typeof UICell | undefined;
     let Drawer: typeof UICell | undefined;
     content = content.filter(C => {
-      if (C && C.prototype instanceof AppHeaderComponent) {
+      if (C && C.prototype instanceof AppHeaderView) {
         Header = C as any;
         return false;
       }
-      if (C && C.prototype instanceof AppDrawerComponent) {
+      if (C && C.prototype instanceof AppDrawerView) {
         Drawer = C as any;
         return false;
       }
@@ -58,18 +59,16 @@ class AppLayoutView extends ViewComponent {
     // handle `ShowAppMenu` event to trigger the drawer
     if (Drawer) {
       this.prototype._Drawer = DrawerActivity.with(Drawer);
-      this.handle({
-        ShowAppMenu() {
+      this.addEventHandler(function (e) {
+        if (e.name === "ShowAppMenu") {
           this.showDrawerAsync();
-        },
+        }
       });
     }
 
     // preset actual content
-    this.presetActiveComponent(
-      "view",
-      UICell.with(presets, Header, UIScrollContainer.with(...content))
-    ).limitBindings();
+    let Cell = UICell.with(presets, Header, UIScrollContainer.with(...content));
+    this.presetChildView("view", Cell);
     return super.preset({});
   }
 
@@ -88,4 +87,5 @@ class AppLayoutView extends ViewComponent {
   private _Drawer?: typeof DrawerActivity;
 }
 
-export const AppLayout = JSX.ify(AppLayoutView);
+// set on prototype:
+export const AppLayout = JSX.tag(AppLayoutView);

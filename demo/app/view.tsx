@@ -1,4 +1,16 @@
-import JSX, { UIMenu, UIMenuItemSelectedEvent, UIRenderPlacement } from "typescene/JSX";
+import {
+  JSX,
+  UIMenu,
+  UIMenuItemSelectedEvent,
+  UIRenderPlacement,
+  bind,
+  UIFlowCell,
+  UIRow,
+  UIHeading3,
+  UIScrollContainer,
+  UIParagraph,
+  UIIconButton,
+} from "typescene";
 import {
   AppDrawer,
   AppHeader,
@@ -27,29 +39,35 @@ const _moreMenu = UIMenu.with({
   },
 });
 
-const MyDrawer = (
-  <AppDrawer>
-    <flowcell
-      dimensions={{ height: 180 }}
-      background="@slate"
-      textColor="@white"
-      padding={16}
-      layout={{ distribution: "end" }}
-    >
-      <row>
-        <h3>Drawer</h3>
-      </row>
-    </flowcell>
-    <scrollcontainer>
-      <flowcell padding={16}>
-        <row>
-          <p>Drawer content</p>
-        </row>
-      </flowcell>
-    </scrollcontainer>
-  </AppDrawer>
+// example using factory-based syntax:
+const MyDrawer = AppDrawer.with(
+  {
+    revealTransition: "right-fast",
+    exitTransition: "left-fast",
+  },
+  UIFlowCell.with(
+    {
+      dimensions: { height: 180 },
+      background: "@slate",
+      textColor: "@white",
+      padding: 16,
+      layout: { distribution: "end" },
+    },
+    UIRow.with(UIHeading3.withText("Drawer")),
+    UIIconButton.with({
+      icon: "close",
+      iconColor: "@white",
+      iconSize: 16,
+      onClick: "+CloseModal",
+      position: { gravity: "overlay", top: 8, right: 8 },
+    })
+  ),
+  UIScrollContainer.with(
+    UIFlowCell.with({ padding: 16 }, UIRow.with(UIParagraph.withText("Drawer content")))
+  )
 );
 
+// example using JSX syntax:
 export default (
   <AppLayout>
     {MyDrawer}
@@ -77,9 +95,25 @@ export default (
         <p>Regular tabs:</p>
       </row>
       <TabBar>
-        <TabBarButton selected>Primary</TabBarButton>
-        <TabBarButton>Secondary</TabBarButton>
+        <TabBarButton onSelect="selectPrimaryTab()" selected>
+          Primary
+        </TabBarButton>
+        <TabBarButton onSelect="selectSecondaryTab()">Secondary</TabBarButton>
       </TabBar>
+      <conditional state={bind("tabSelection").match("primary")}>
+        <cell revealTransition="left-fast">
+          <row>
+            <label textStyle={{ color: "@text/50%" }}>(Primary content)</label>
+          </row>
+        </cell>
+      </conditional>
+      <conditional state={bind("tabSelection").match("secondary")}>
+        <cell revealTransition="right-fast">
+          <row>
+            <label textStyle={{ color: "@text/50%" }}>(Secondary content)</label>
+          </row>
+        </cell>
+      </conditional>
     </flowcell>
     <separator />
 
