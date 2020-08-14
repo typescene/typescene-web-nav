@@ -58,7 +58,9 @@ class AppLayoutView extends ViewComponent {
 
     // handle `ShowAppMenu` event to trigger the drawer
     if (Drawer) {
-      this.prototype._Drawer = DrawerActivity.with(Drawer);
+      let DrawerClass = DrawerActivity.with(Drawer);
+      this.presetBindingsFrom(DrawerClass);
+      this.prototype._Drawer = DrawerClass;
       this.addEventHandler(function (e) {
         if (e.name === "ShowAppMenu") {
           this.showDrawerAsync();
