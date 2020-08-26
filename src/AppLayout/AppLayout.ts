@@ -23,7 +23,6 @@ class DrawerActivity extends DialogViewActivity {
   constructor() {
     super();
     this.placement = UIRenderPlacement.DRAWER;
-    this.modalShadeClickToClose = true;
   }
 }
 
