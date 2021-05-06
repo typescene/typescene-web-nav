@@ -4,8 +4,6 @@ import {
   UIButton,
   UIStyle,
   observe,
-  UIComponent,
-  UICell,
   UIComponentEvent,
 } from "typescene";
 
@@ -89,14 +87,14 @@ export class TabBarButtonView extends UIBorderlessButton.with({
     constructor(public readonly button: TabBarButtonView) {}
     onSelectedChangeAsync() {
       if (this.button.selected) {
-        this.button.propagateComponentEvent("Select");
+        this.button.emitAction("Select");
       } else {
-        this.button.propagateComponentEvent("Deselect");
+        this.button.emitAction("Deselect");
       }
     }
     onRendered() {
       if (this.button.selected) {
-        this.button.propagateComponentEvent("Select");
+        this.button.emitAction("Select");
       }
     }
     onSelect() {
@@ -106,7 +104,7 @@ export class TabBarButtonView extends UIBorderlessButton.with({
       this.button.selected = false;
     }
     onClick() {
-      this.button.propagateComponentEvent("Select");
+      this.button.emitAction("Select");
     }
     onArrowLeftKeyPress() {
       this.button.requestFocusPrevious();

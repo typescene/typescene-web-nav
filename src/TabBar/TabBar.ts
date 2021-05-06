@@ -18,6 +18,13 @@ const _tabBarStyle = UIStyle.create("TabBar", {
     borderColor: "@text/35%",
   },
 });
+const _tabBarInner = UIStyle.create("TabBar_inner", {
+  containerLayout: {
+    axis: "horizontal",
+    distribution: "start",
+  },
+  dimensions: { width: "100%", grow: 0 },
+});
 
 /**
  * A bar containing tabs, for use with `TabBarButtonView`
@@ -32,13 +39,7 @@ export class TabBarView extends UICell.with({ style: _tabBarStyle }) {
       UISelectionController.with(
         UIScrollContainer.with(
           {
-            style: UIStyle.create("TabBar_inner", {
-              containerLayout: {
-                axis: "horizontal",
-                distribution: "start",
-              },
-              dimensions: { width: "100%", grow: 0 },
-            }),
+            style: _tabBarInner,
             horizontalScrollEnabled: true,
           },
           ...content

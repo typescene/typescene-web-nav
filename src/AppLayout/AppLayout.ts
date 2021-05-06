@@ -60,11 +60,6 @@ class AppLayoutView extends ViewComponent {
       let DrawerClass = DrawerActivity.with(Drawer);
       this.presetBindingsFrom(DrawerClass);
       this.prototype._Drawer = DrawerClass;
-      this.addEventHandler(function (e) {
-        if (e.name === "ShowAppMenu") {
-          this.showDrawerAsync();
-        }
-      });
     }
 
     // preset actual content
@@ -83,6 +78,10 @@ class AppLayoutView extends ViewComponent {
     let drawer = (this.drawerActivity = new this._Drawer());
     await drawer.activateAsync();
     return drawer;
+  }
+
+  protected onShowAppMenu() {
+    this.showDrawerAsync();
   }
 
   private _Drawer?: typeof DrawerActivity;
