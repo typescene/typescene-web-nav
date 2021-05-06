@@ -20,7 +20,9 @@ import {
   AppToolbar,
   TabBar,
   TabBarButton,
-} from "../../dist";
+} from "@typescene/web-nav/dist-es8";
+// Note: ^^ since TypeScript target is set to ES2017,
+// we need to include ES8-specific output for this module
 
 const _moreVertIcon =
   '<svg viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>';
@@ -39,7 +41,7 @@ const _moreMenu = UIMenu.with({
   },
 });
 
-// example using factory-based syntax:
+// example using component preset syntax:
 const MyDrawer = AppDrawer.with(
   {
     revealTransition: "right-fast",
@@ -95,10 +97,10 @@ export default (
         <p>Regular tabs:</p>
       </row>
       <TabBar>
-        <TabBarButton onSelect="selectPrimaryTab()" selected>
+        <TabBarButton onSelect="+SelectPrimaryTab" selected>
           Primary
         </TabBarButton>
-        <TabBarButton onSelect="selectSecondaryTab()">Secondary</TabBarButton>
+        <TabBarButton onSelect="+SelectSecondaryTab">Secondary</TabBarButton>
       </TabBar>
       <conditional state={bind("tabSelection").match("primary")}>
         <cell revealTransition="left-fast">

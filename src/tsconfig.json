@@ -1,11 +1,18 @@
 {
   "compilerOptions": {
-    "strict": true,
     "target": "es5",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "lib": ["esnext", "dom"],
     "outDir": "../dist",
     "declaration": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
-    "lib": ["esnext", "dom"]
-  },
-  "files": ["index.ts"]
+    "importHelpers": true,
+    "stripInternal": true
+  }
 }

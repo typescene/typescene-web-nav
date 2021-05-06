@@ -15,7 +15,7 @@ This package contains the following components:
 
 ## Installation
 
-**Note:** This component requires [Typescene](https://github.com/typescene/typescene) version 3+ along with `@typescene/webapp`.
+**Note:** This component requires [Typescene](https://github.com/typescene/typescene) along with `@typescene/webapp`.
 
 Install the NPM package first:
 
